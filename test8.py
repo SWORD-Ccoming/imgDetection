@@ -14,9 +14,9 @@ def color_cluster(img_file, k):
     data = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     data = data.reshape((-1, 3))
     kmeans = KMeans(n_clusters=k).fit(data)
-    GMM = GaussianMixture(n_components=k).fit(data)
-    # clusterCenter = kmeans.cluster_centers_
-    pixel_label = GMM.predict(data)               # 取出聚类中心
+    # GMM = GaussianMixture(n_components=k).fit(data)
+    clusterCenter = kmeans.cluster_centers_
+    pixel_label = kmeans.labels_            # 取出聚类中心
 
     # 计算聚类得分，Calinski-Harabasz分数值越大聚类结果越好
     ch_score = metrics.calinski_harabasz_score(data, pixel_label)
@@ -63,25 +63,25 @@ def render(img_size, pixel_label, label_value, rgb_array, k):
         render_img = Image.fromarray(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         save_name = stringList[i]
-        cv2.imwrite('E:/81/'+ save_name+'.png', img)
+        cv2.imwrite('E:/81/' + save_name+'.png', img)
     return render_img, img
 
 
 if __name__ == '__main__':
-    img_file = r'81coloron.png'
+    img_file = r'weatherImng1.jpg'
     max_score = -1000
     renders = []
     best_k = -1
     raw_img = Image.open(img_file)
-    k = 82
+    k = 6
     label_value, label_count, rgb_array, score, pixel_label = color_cluster(img_file, k)
     render_img, imgNew = render(raw_img.size, pixel_label, label_value, rgb_array, k)
     renders.append(render_img)
     # show(label_value, label_count, rgb_array, k, raw_img, render_img)
-    if max_score < score:
-        max_score = score
-        best_k = k
-    print(k)
+    # if max_score < score:
+    #     max_score = score
+    #     best_k = k
+    print(score)
     # show2(raw_img, renders, 2)
     plt.imshow(render_img)
     plt.show()
