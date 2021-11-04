@@ -68,7 +68,7 @@ def render(img_size, pixel_label, label_value, rgb_array, k):
 
 
 if __name__ == '__main__':
-    img_file = r'weatherImng1.jpg'
+    img_file = r'weatherImg1.png'
     max_score = -1000
     renders = []
     best_k = -1

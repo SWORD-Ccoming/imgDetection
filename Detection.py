@@ -4,9 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def getAveHSV(imgFile = '1Canny.png'):
+def getAveHSV(imgFile = 'weatherImg1.png'):
     img = cv2.imread(imgFile)
-    img1 = cv2.imread('1.png')
+    img1 = cv2.imread('weatherImg1.png')
     # hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     cv.imwrite('temp.png', img)#//中间过程
     gray = cv.imread('temp.png', cv.IMREAD_GRAYSCALE)
@@ -18,14 +18,14 @@ def getAveHSV(imgFile = '1Canny.png'):
         box = [x, y, w, h]
         area = cv.contourArea(cnt)
 
-        if ( area >0):
-            cv.rectangle(img1, pt1=(x, y), pt2=(x + w, y + h), color=(0,  0, 0), thickness=2)
+        if (area >0):
+            cv.rectangle(img1, pt1=(x, y), pt2=(x + w, y + h), color=(255,  255, 255), thickness=1)
             # plt.imshow(img)
             # plt.show()
             areaList.append(area)
     plt.imshow(img1)
     plt.show()
-    cv2.imwrite('320colorDetection.png', img1)
+    cv2.imwrite('2Detection.png', img1)
     return areaList
 areaList = []
 areaList = getAveHSV()
