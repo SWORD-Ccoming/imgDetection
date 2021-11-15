@@ -1,6 +1,6 @@
 import cv2
 
-img = cv2.imread('105water1Kmeans.png', 0)
+img = cv2.imread('3NoNoise.png', 0)
 x = cv2.Sobel(img, cv2.CV_16S, 1, 0)
 y = cv2.Sobel(img, cv2.CV_16S, 0, 1)
 # cv2.convertScaleAbs(src[, dst[, alpha[, beta]]])
@@ -13,5 +13,5 @@ cv2.imshow('Scale_absX', Scale_absX)
 cv2.imshow('Scale_absY', Scale_absY)
 cv2.imshow('result', result)
 cv2.waitKey(0)
-cv2.imwrite('105water1Sobal.png', result)
+cv2.imwrite('3sobal.png', result)
 # cv2.destroyAllWindows()
