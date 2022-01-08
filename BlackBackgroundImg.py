@@ -17,8 +17,8 @@ def img_resize_to_target_black(image):
 
 
 if __name__ == '__main__':
-	image = cv2.imread('1.png')
+	image = cv2.imread('1new.png')
 	img_new_black = img_resize_to_target_black(image)
 	cv2.imshow("img_new_black", img_new_black)
-	cv2.imwrite("1black.png", img_new_black)
+	cv2.imwrite("1newblack.png", img_new_black)
 	cv2.waitKey()

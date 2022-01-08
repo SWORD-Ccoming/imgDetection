@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 
-# 读取图片
-imagePath = 'weatherImg1Liner.png'
+# 读取图片(
+imagePath = "testweather2.png"
 img = cv2.imread(imagePath)
 
 # 转化成灰度图
@@ -14,7 +14,7 @@ sobel = cv2.Sobel(gray, cv2.CV_8U, 1, 0, ksize=3)
 ret, binary = cv2.threshold(sobel, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)
 
 # 膨胀、腐蚀
-element1 = cv2.getStructuringElement(cv2.MORPH_RECT, (30, 9))
+element1 = cv2.getStructuringElement(cv2.MORPH_RECT, (24, 6))
 element2 = cv2.getStructuringElement(cv2.MORPH_RECT, (24, 6))
 
 # 膨胀一次，让轮廓突出
@@ -34,7 +34,7 @@ for i in range(len(contours)):
 
     # 计算轮廓面积，并筛选掉面积小的
     area = cv2.contourArea(cnt)
-    if (area < 1000):
+    if (area < 0):
         continue
 
     # 找到最小的矩形
@@ -51,8 +51,8 @@ for i in range(len(contours)):
     width = abs(box[0][0] - box[2][0])
 
     # 根据文字特征，筛选那些太细的矩形，留下扁的
-    if (height > width * 1.3):
-        continue
+    # if (height > width * 1.3):
+    #     continue
 
     region.append(box)
 

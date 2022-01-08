@@ -43,16 +43,18 @@ def imagecrop(image, box):
     cropimage = image[min(xs):max(xs), min(ys):max(ys)]
     print(cropimage.shape)
     cropimage = imutils.rotate_bound(cropimage, 90)
-    cv2.imwrite('cropimage1.png', cropimage)
+    cv2.imwrite('rotateImg3.png', cropimage)
     return cropimage
 
-rotateimg = cv2.imread('1black.png')
+
+rotateimg = cv2.imread('1Black.png')
+img1 = cv2.imread('1newblack.png')
 cv.imwrite('temp.png', rotateimg)#//中间过程
 gray = cv.imread('temp.png', cv.IMREAD_GRAYSCALE)
 contours, hierarchy = cv.findContours(image=gray, mode=cv.RETR_EXTERNAL, method=cv.CHAIN_APPROX_SIMPLE)
-rect = cv2.minAreaRect(contours[1])
+rect = cv2.minAreaRect(contours[0])
 box_origin = cv2.boxPoints(rect)
 M = cv2.getRotationMatrix2D(rect[0], rect[2], 1)
-dst = cv2.warpAffine(rotateimg, M, (2*rotateimg.shape[0], 2*rotateimg.shape[1]))
+dst = cv2.warpAffine(img1, M, (2*img1.shape[0], 2*img1.shape[1]))
 box = rotatecordiate(rect[2], box_origin, rect[0][0], rect[0][1])
 imagecrop(dst, np.int0(box))

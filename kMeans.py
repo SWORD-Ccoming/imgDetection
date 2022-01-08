@@ -64,12 +64,12 @@ def render(img_size, pixel_label, label_value, rgb_array):
 
 
 if __name__ == '__main__':
-    img_file = r'weatherImng1.jpg'
+    img_file = r'2000.png'
     max_score = -1000
     renders = []
     best_k = -1
     raw_img = Image.open(img_file)
-    k = 5
+    k = 2
     label_value, label_count, rgb_array, score, pixel_label = color_cluster(img_file, k)
     render_img, imgNew = render(raw_img.size, pixel_label, label_value, rgb_array)
     renders.append(render_img)

@@ -7,17 +7,17 @@ from sklearn.mixture import GaussianMixture
 from PIL import Image
 from pylab import *
 from sklearn import metrics
-
+import os
 
 def color_cluster(img_file, k):
     img = cv2.imread(img_file)
-    data = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    # data = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    data = img
     data = data.reshape((-1, 3))
     kmeans = KMeans(n_clusters=k).fit(data)
     # GMM = GaussianMixture(n_components=k).fit(data)
-    clusterCenter = kmeans.cluster_centers_
     pixel_label = kmeans.labels_            # 取出聚类中心
-
+    # pixel_label = GMM.predict(data)
     # 计算聚类得分，Calinski-Harabasz分数值越大聚类结果越好
     ch_score = metrics.calinski_harabasz_score(data, pixel_label)
 
@@ -29,7 +29,8 @@ def color_cluster(img_file, k):
         hsv_mean = (np.sum(data[pixel_label == value], axis=0) / np.sum(pixel_label == value)).astype(np.uint8)
         hsv_avg.append(hsv_mean)
     hsv_array = np.reshape(np.array(hsv_avg), (k, 1, 3))
-    rgb_array = cv2.cvtColor(hsv_array, cv2.COLOR_HSV2RGB)
+    # rgb_array = cv2.cvtColor(hsv_array, cv2.COLOR_HSV2RGB)
+    rgb_array = hsv_array
     rgb_array = np.reshape(rgb_array, (k, 3))    # 101,3
     return np.array(list(label_value)), np.array(label_count), rgb_array, ch_score, pixel_label
 
@@ -50,11 +51,11 @@ def show2(raw_img, renders, start_k):
     plt.show()
 
 
-def render(img_size, pixel_label, label_value, rgb_array, k):
-    stringList = []
-    for i in range(k):
-        num = i+1
-        stringList.append(str(num))
+def render(img_size, pixel_label, label_value, rgb_array, k, filename):
+    # stringList = []
+    # for i in range(k):
+    #     num = i+1
+    #     stringList.append(str(num))
     for i, value in enumerate(label_value):
         img_shape = (img_size[1], img_size[0], 3)
         img = np.zeros(img_shape, dtype=np.uint8)
@@ -62,26 +63,30 @@ def render(img_size, pixel_label, label_value, rgb_array, k):
         img[pixel_label == value] = rgb_array[i]
         render_img = Image.fromarray(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        save_name = stringList[i]
-        cv2.imwrite('E:/81/' + save_name+'.png', img)
+        # if rgb_array[i][0] == 50 and rgb_array[i][1] == 11 and rgb_array[i][2]:
+        save_name = filename + str(i)
+        cv2.imwrite('E:/91/' + save_name+'.png', img)
     return render_img, img
 
 
 if __name__ == '__main__':
-    img_file = r'1.bmp'
-    max_score = -1000
-    renders = []
-    best_k = -1
-    raw_img = Image.open(img_file)
-    k = 5
-    label_value, label_count, rgb_array, score, pixel_label = color_cluster(img_file, k)
-    render_img, imgNew = render(raw_img.size, pixel_label, label_value, rgb_array, k)
-    renders.append(render_img)
+    inputPath = 'E:/81'
+    for filename in os.listdir(inputPath):
+        img_path = inputPath + '/' + filename
+        img_file = img_path
+        max_score = -1000
+        renders = []
+        best_k = -1
+        raw_img = Image.open(img_file)
+        k = 4
+        label_value, label_count, rgb_array, score, pixel_label = color_cluster(img_file, k)
+        render_img, imgNew = render(raw_img.size, pixel_label, label_value, rgb_array, k, filename)
+        renders.append(render_img)
     # show(label_value, label_count, rgb_array, k, raw_img, render_img)
     # if max_score < score:
     #     max_score = score
     #     best_k = k
-    print(score)
+    #     print(score)
     # show2(raw_img, renders, 2)
-    plt.imshow(render_img)
-    plt.show()
+    #     plt.imshow(render_img)
+    #     plt.show()
