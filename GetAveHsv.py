@@ -62,7 +62,7 @@ def getAveHSV(imgFile = 'test1020.png'):
     s = np.array(sResult)
     v = np.array(vResult)
     print(h.shape, s.shape, v.shape)
-    return h , s, v
+    return h, s, v
 
 a, b, c = getAveHSV()
 

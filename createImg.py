@@ -96,6 +96,14 @@ for i in range(0, 1230):
 				or i in range(1050, 1080) or i in range(1170, 1200)):
 					imgV[i, j] = 178
 dataRGB = cv2.merge([imgH, imgS, imgV])
+out_nameList = ['h', 's', 'v']
+path_1 = 'C:/Users/ROG/Desktop/test'
+save_name = path_1 + '/' + out_nameList[0] + '.csv'
+np.savetxt(save_name, np.unique(imgH), delimiter=',')
+save_name = path_1 + '/' + out_nameList[1] + '.csv'
+np.savetxt(save_name, np.unique(imgS), delimiter=',')
+save_name = path_1 + '/' + out_nameList[2] + '.csv'
+np.savetxt(save_name, np.unique(imgV), delimiter=',')
 dataRGBFull = cv2.cvtColor(dataRGB, cv2.COLOR_HSV2BGR)
 cv2.imwrite('E:/pythonProject/320color.png', dataRGBFull)
 cv2.imshow("iamge", dataRGBFull)

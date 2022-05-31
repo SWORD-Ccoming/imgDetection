@@ -43,18 +43,18 @@ def dots4ToRecC(poly, img_w, img_h):
 
 
 if __name__ == '__main__':
-    classnames_v1_5 = ['number', 'number8', 'number-##']
-    #source_dir是存放.xml文件的文件夹
-    source_dir = 'C:/Users/ROG/Desktop/test1/'
-    #dst_dir是存放生成的文本文件的文件夹
-    dst_dir = 'C:/Users/ROG/Desktop/result1/'
+    classnames_v1_5 = ['ok', 'bad']
     k = 0
+    #source_dir是存放.xml文件的文件夹
+    source_dir = 'E:/实验一数据集/photo1/'
+    #dst_dir是存放生成的文本文件的文件夹
+    dst_dir = 'E:/实验一数据集/labels/'
     img = cv2.imread('C:/Users/ROG/Desktop/resultclass1/81.jpg')
     for file in os.listdir(source_dir):
         tree = ET.parse(source_dir + file)
         objs = tree.findall('object')
         num_objs = len(objs)
-        boxes_list=[]
+        boxes_list = []
         for ix, obj in enumerate(objs):
             bbox = obj.find('robndbox')
             name = obj.find('name')
@@ -79,11 +79,15 @@ if __name__ == '__main__':
             #                  color=(0, 255, 0),
             #                  thickness=2
             #                  )
-            bbox = np.array(dots4ToRecC(poly, 2445, 2118))
+            bbox = np.array(dots4ToRecC(poly, 1280, 960))
             if bbox[2] < bbox[3]:
                 tmp = bbox[2]
                 bbox[2] = bbox[3]
                 bbox[3] = tmp
+                if angle < 1.570796:
+                    angle = angle + 1.570796
+                else:
+                    angle = angle - 1.570796
             # 同样，angle应该也要在第一种情况的基础上减去一个pi/2
             # if angle < 1.57:
             #     theta = round(angle - np.pi*0.5, 6)
@@ -95,10 +99,11 @@ if __name__ == '__main__':
         # cv2.imshow('result', imgnew)
         # cv2.waitKey(0)
         tmp = file.split(sep='.')
-        gt_name = dst_dir + 'P000' + tmp[0] + '__1__0___0' + '.txt'
+        # gt_name = dst_dir + 'P000' + tmp[0] + '__1__0___0' + '.txt'
+        gt_name = dst_dir + tmp[0] + '.txt'
         gt_file = open(gt_name, 'w')
         gt_file.writelines(boxes_list)
         gt_file.close()
-        k+=1
-    print('there are %d images in total' % int(k))
-    print('done')
+        # k+=1
+    # print('there are %d images in total' % int(k))
+    # print('done')

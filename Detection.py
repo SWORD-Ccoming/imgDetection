@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 def getAveHSV(imgFile = 'testdilate2.png'):
     img = cv2.imread(imgFile)
-    img1 = cv2.imread('2069white.png')
+    img1 = cv2.imread('testdilate2.png')
     img1 = cv2.resize(img1, (600, 600))
     # hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     cv.imwrite('temp.png', img)#//中间过程
@@ -19,7 +19,7 @@ def getAveHSV(imgFile = 'testdilate2.png'):
         box = [x, y, w, h]
         area = cv.contourArea(cnt)
 
-        if (area > 100):
+        if (area > 0):
             cv.rectangle(img1, pt1=(x, y), pt2=(x + w, y + h), color=(0,  255, 0), thickness=1)
             # plt.imshow(img)
             # plt.show()
